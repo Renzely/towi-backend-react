@@ -1,20 +1,29 @@
 const mongoose = require("mongoose");
 
-const ParcelDataSchema = new mongoose.Schema({
-    user : String,
-    parcel: [
-         {       
-        parcel_count : Number,
-        date : String,
-        parcel_type: String
-         }
+const ParcelDataSchema = new mongoose.Schema(
+  {
+    date: String,
+    inputId: String,
+    name: String,
+    UserEmail: String,
+    accountNameBranchManning: String,
+    period: String,
+    month: String,
+    week: String,
+    category: String,
+    skuDescription: String,
+    products: String,
+    status: String,
+    beginning: Number,
+    delivery: Number,
+    ending: Number,
+    offtake: Number,
+    inventoryDayslevel: Number,
+    noOfDaysOOS: Number,
+  },
+  {
+    collection: "TowiInventory",
+  }
+);
 
-    ]
-},{
-    collection:"parcels"
-});
-
-mongoose.model("parcelData", ParcelDataSchema);
-
-
-
+mongoose.model("TowiInventory", ParcelDataSchema);
