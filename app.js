@@ -7,6 +7,7 @@ require("./ParcelDetails");
 require("./AttendanceInput");
 require("./ParcelInput");
 require("./ParcelData");
+require("./ReturnToVendor");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -21,6 +22,8 @@ const mongoURI =
 const User = mongoose.model("TowiDb");
 
 const Attendance = mongoose.model("attendances");
+
+const RTV = mongoose.model("TowiReturnToVendor");
 
 // const Parcel = mongoose.model("Towiinventory");
 
@@ -117,13 +120,13 @@ app.post("/login-user", async (req, res) => {
 });
 
 app.put("/update-status", async (req, res) => {
-  const { isActivate, email } = req.body;
+  const { isActivate, emailAddress } = req.body;
 
-  const userEmail = email;
+  const userEmail = emailAddress;
   console.log(userEmail);
   try {
     await User.findOneAndUpdate(
-      { emailAddress: userEmail },
+      { email_Address: userEmail },
       { $set: { isActivate: isActivate } }
     );
     res.send({ status: 200, data: "Status updated" });
@@ -201,6 +204,25 @@ app.get("/retrieve-user-attendance", async (req, res) => {
     });
   } catch (error) {
     return res.send({ error: error });
+  }
+});
+app.put("/update-user-branch", async (req, res) => {
+  const { email_Address, branches } = req.body;
+
+  try {
+    // Update the user's branches based on the provided email
+    await mongoose
+      .model("TowiDb")
+      .findOneAndUpdate(
+        { email_Address: email_Address },
+        { $set: { accountNameBranchManning: branches } }
+      );
+
+    res
+      .status(200)
+      .send({ status: 200, message: "User branches updated successfully" });
+  } catch (error) {
+    res.status(500).send({ status: 500, error: error.message });
   }
 });
 
@@ -338,6 +360,17 @@ app.post("/test-index", async (req, res) => {
 app.post("/retrieve-parcel-data", async (req, res) => {
   try {
     const parcelPerUser = await ParcelData.find();
+
+    console.log("Found parcels:", parcelPerUser);
+    return res.status(200).json({ status: 200, data: parcelPerUser });
+  } catch (error) {
+    return res.send({ error: error });
+  }
+});
+
+app.post("/retrieve-RTV-data", async (req, res) => {
+  try {
+    const parcelPerUser = await RTV.find();
 
     console.log("Found parcels:", parcelPerUser);
     return res.status(200).json({ status: 200, data: parcelPerUser });

@@ -4,14 +4,14 @@ const UserDetailSchema = new mongoose.Schema(
   {
     remarks: String,
     firstname: String,
-    // middle_name: String,
+    middleName: String,
     lastname: String,
     email_Address: { type: String, unique: true },
     contactNum: String,
     username: String,
     password: String,
     isActivate: Boolean,
-    accountNameBranchManning: String,
+    accountNameBranchManning: [String],
   },
   {
     collection: "TowiDb",

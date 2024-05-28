@@ -12,6 +12,7 @@ const ParcelDataSchema = new mongoose.Schema(
     week: String,
     category: String,
     skuDescription: String,
+    skuCode: Number,
     products: String,
     status: String,
     beginning: Number,
